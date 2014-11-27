@@ -25,3 +25,10 @@ hadoop jar chdfs-simple-0.0.1-standalone.jar chdfs-simple.core
 ## 打包
 当然你也可以修改代码 ，就用lein uberjar 来打包。
 <br/> 这里你要使用到我的另外一个repository   [https://github.com/malakaw/java_malaka_hdfsUtil](https://github.com/malakaw/java_malaka_hdfsUtil)
+
+
+## 访问
+<pre><code>
+http://xxxx/getvalue?key=...
+jsonp方式，  http://xxxx/jsonp_getvalue?key=...
+</code></pre>
