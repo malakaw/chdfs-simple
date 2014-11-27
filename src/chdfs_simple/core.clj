@@ -1,6 +1,7 @@
 (ns chdfs-simple.core
   (:use
       [clojure.tools.logging :only (info error)]
+      [ring.middleware.jsonp :only (wrap-json-with-padding)]
       [org.httpkit.server]
       [compojure.core]
       [compojure.route]
@@ -13,8 +14,7 @@
       )
   (:require
             [ring.middleware.json :as middleware]
-            [compojure.handler :as handler]
-            [compojure.route :as route])
+            )
   (:gen-class))
 
 
@@ -68,7 +68,7 @@
 
 (defroutes all-routes
   (GET "/req" []  getInfo)
-  (GET "/jsonp_getvalue" []  (fn [req] (pr-str (:params req))))
+  (GET "/jsonp_getvalue" []  getJsonpValueFromMapFile)
   (GET "/getvalue" [] getValueFromMapFile)
   )
 
@@ -77,10 +77,8 @@
 
 (def app
   (->
-   (handler/api all-routes)
-   (middleware/wrap-json-body)
-   (middleware/wrap-json-params)
-   (middleware/wrap-json-response)
+   (wrap-params all-routes)
+   (wrap-json-with-padding)
   )
 )
 
