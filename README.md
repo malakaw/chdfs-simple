@@ -15,5 +15,12 @@
 
 
 # 运行
+clone 整个项目，然后放的hadoop集群上的某台机器上，只要本地目录就可以；修改配置，
+<pre><code>
+hadoop jar chdfs-simple-0.0.1-standalone.jar chdfs-simple.core
+</code></pre>
+
+
+
 ## 打包
-## 启动
+当然你也可以修改代码 ，就用lein uberjar 来打包。

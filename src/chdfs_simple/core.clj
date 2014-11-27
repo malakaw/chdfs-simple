@@ -69,7 +69,7 @@
 (defroutes all-routes
   (GET "/req" []  getInfo)
   (GET "/jsonp_getvalue" []  (fn [req] (pr-str (:params req))))
-  (GET "/getvalue" [] getValueFromMapFiletest)
+  (GET "/getvalue" [] getValueFromMapFile)
   )
 
 
