@@ -1,1 +1,0 @@
-([:dependencies ([com.vip.nproject/java_malaka_hdfsUtil "0.0.1"] [org.clojure/clojure "1.6.0"] [http-kit/http-kit "2.1.16"] [javax.servlet/servlet-api "2.5"] [compojure/compojure "1.1.8"] [ring/ring-json "0.2.0"] [ring.middleware.jsonp/ring.middleware.jsonp "0.1.6"] [org.apache.hadoop/hadoop-client "2.2.0"] [com.taoensso/carmine "2.7.0"])])
