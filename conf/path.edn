@@ -1,4 +1,6 @@
 {
  :hdfs_path      "/spark/out2"
  :server_port    8988
+ :update_every_minute   60
+ :update_delay_minute   30
 }

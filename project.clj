@@ -13,6 +13,7 @@
                  [ring.middleware.jsonp "0.1.6"]
                  [org.apache.hadoop/hadoop-client "2.2.0"]
                  [com.taoensso/carmine "2.7.0"]
+                 [overtone/at-at "1.2.0"]
                  [org.clojure/tools.logging "0.2.4"]
                  [org.slf4j/slf4j-log4j12 "1.7.1"]
                  [log4j/log4j "1.2.17" :exclusions [javax.mail/mail

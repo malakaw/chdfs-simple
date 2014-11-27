@@ -21,6 +21,14 @@
 (import com.vip.mlk.hdfs.MapFileLookup)
 
 (require 'clojure.edn)
+
+(use 'overtone.at-at)
+
+(def schedule-pool (mk-pool))
+
+
+
+
 (def configmy (clojure.edn/read-string (slurp "conf/path.edn")))
 
 (defn getInfo [req]
@@ -30,13 +38,33 @@
 
  )
 
+(defn stop_AllSchedule []
+  (stop-and-reset-pool! schedule-pool)
+  )
+
+(defn show-Allschedule []
+  (show-schedule schedule-pool)
+  )
+
+
+
+(defn callUpdateHDFS []
+  (every (* 1000 60 (:update_every_minute configmy))
+         #(do
+           (info "update hdfs file")
+           (-> (com.vip.mlk.hdfs.MapFileLookup/getInstance  (:hdfs_path configmy))
+               (.update (:hdfs_path configmy)
+                       ))
+         )
+       schedule-pool :fixed-delay true :initial-delay (* 1000 60 (:update_delay_minute configmy)))
+  )
 
 
 
 
 
 
-(defn getValueFromMapFile ^{:tag clojure.lang.PersistentArrayMap}  [req]
+(defn  getJsonpValueFromMapFile ^{:tag clojure.lang.PersistentArrayMap}  [req]
   {:status 200
    :headers {"Content-Type" "application/json; charset=utf-8"}
    :body
@@ -52,7 +80,7 @@
 
 
 
-(defn getJsonpValueFromMapFile ^{:tag clojure.lang.PersistentArrayMap}  [req]
+(defn  getValueFromMapFile ^{:tag clojure.lang.PersistentArrayMap}  [req]
   {:status 200
    :headers {"Content-Type" "application/json; charset=utf-8"}
    :body
