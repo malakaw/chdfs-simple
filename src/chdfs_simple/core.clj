@@ -10,7 +10,7 @@
       [ring.util.response :only (response content-type)]
       [clojure.string     :only (lower-case)]
       [ring.middleware.params         :only [wrap-params]]
-
+      [chdfs-simple.brandCache :only [callUpdateBrandMap getbrand getbrands]]
       )
   (:require
             [ring.middleware.json :as middleware]
@@ -21,7 +21,7 @@
 (import com.vip.mlk.hdfs.MapFileLookup)
 
 (require 'clojure.edn)
-
+(require '[clojure.string :as str])
 (use 'overtone.at-at)
 
 (def schedule-pool (mk-pool))
@@ -86,19 +86,58 @@
    :body
    (let [getval
          (-> (com.vip.mlk.hdfs.MapFileLookup/getInstance  (:hdfs_path configmy))
-             (.getValue (get (-> req :params) "key"))
-            )
+             (.getValueByteV (get (-> req :params) "key"))
+         )
          ]
-     (format "{\"data\" : \"%s\"}" getval))
+;;     (remove nil? (for [i (str/split tom #",")] (if (contains? jerry i) (jerry i))))
+
+     (format "{\"data\" : \"%s\"}" (clojure.string/join "," getval) ))
+   }
+  )
+
+
+(defn  getBrandbyindexID   [req]
+  {:status 200
+   :headers {"Content-Type" "application/json; charset=utf-8"}
+   :body
+   (let [getval
+         (getbrand (get (-> req :params) "key"))
+         ]
+     (format "{\"data\" : \"%s\"}"  getval))
+   }
+  )
+
+
+(defn  getBrandbyindexIDS   [req]
+   {:status 200
+   :headers {"Content-Type" "application/json; charset=utf-8"}
+   :body
+   (let [getval
+         (-> (com.vip.mlk.hdfs.MapFileLookup/getInstance  (:hdfs_path configmy))
+             (.getValueByteV (get (-> req :params) "key"))
+         )
+         ]
+;;     (remove nil? (for [i (str/split tom #",")] (if (contains? jerry i) (jerry i))))
+
+     (format "{\"data\" : [%s] }"      (getbrands getval) )
+
+
+     )
    }
   )
 
 
 (defroutes all-routes
+
   (GET "/req" []  getInfo)
   (GET "/jsonp_getvalue" []  getJsonpValueFromMapFile)
   (GET "/getvalue" [] getValueFromMapFile)
+  (GET "/b" [] getBrandbyindexID)
+  (GET "/bids" [] getBrandbyindexIDS)
   )
+
+
+
 
 
 
@@ -126,5 +165,8 @@
 
 
 (defn -main [&args]
-  (start-server)
+  (do
+   (start-server)
+   (callUpdateBrandMap)
+  )
   )

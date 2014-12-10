@@ -3,4 +3,7 @@
  :server_port    8988
  :update_every_minute   60
  :update_delay_minute   30
-}
+ :readBrandMap_every_minute 60
+ :hdfs_brandmap_1  "/spark/ALSData/2/newsessionrecommend"
+ :hdfs_brandmap_2  "/spark/ALSData/2/onlineIndex"
+ }
